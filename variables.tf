@@ -30,6 +30,11 @@ variable "master_username" {
   default = "postgres"
 }
 
+variable "instance_count" {
+  type    = number
+  default = 2
+}
+
 variable "min_acu" {
   type    = number
   default = 0.5
