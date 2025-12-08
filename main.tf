@@ -12,6 +12,7 @@ resource "aws_rds_cluster" "this" {
   backup_retention_period     = var.backup_retention_days
   deletion_protection         = var.deletion_protection
   skip_final_snapshot         = var.skip_final_snapshot
+  final_snapshot_identifier   = var.skip_final_snapshot ? null : "${var.name}-final"
 
   serverlessv2_scaling_configuration {
     min_capacity = var.min_acu
@@ -22,12 +23,12 @@ resource "aws_rds_cluster" "this" {
 }
 
 resource "aws_rds_cluster_instance" "this" {
-  count                         = var.instance_count
-  identifier                    = "${var.name}-${count.index}"
-  cluster_identifier            = aws_rds_cluster.this.id
-  instance_class                = "db.serverless"
-  engine                        = aws_rds_cluster.this.engine
-  engine_version                = aws_rds_cluster.this.engine_version
-  performance_insights_enabled  = true
-  tags                          = var.tags
+  count                        = var.instance_count
+  identifier                   = "${var.name}-${count.index}"
+  cluster_identifier           = aws_rds_cluster.this.id
+  instance_class               = "db.serverless"
+  engine                       = aws_rds_cluster.this.engine
+  engine_version               = aws_rds_cluster.this.engine_version
+  performance_insights_enabled = true
+  tags                         = var.tags
 }
